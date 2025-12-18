@@ -1,0 +1,47 @@
+[package]
+name = "wear-synaptic"
+version = "1.0.0"
+description = "The Docker Desktop for Model Context Protocol (MCP)"
+authors = ["Muhammad Ridwan Saputra <RidTheWann>"]
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+name = "wear_synaptic_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+# Tauri Core
+tauri = { version = "2", features = [] }
+
+# Tauri Plugins (v2)
+tauri-plugin-shell = "2"
+tauri-plugin-fs = "2"
+tauri-plugin-dialog = "2"
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Async Runtime
+tokio = { version = "1", features = ["full"] }
+
+# Utilities
+dirs = "5"
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+thiserror = "1"
+
+# Async Stream Processing (for MITM Proxy)
+tokio-util = { version = "0.7", features = ["codec"] }
+futures = "0.3"
+
+# Database (Phase 5: Persistent Logging)
+tauri-plugin-sql = { version = "2", features = ["sqlite"] }
+rusqlite = { version = "0.31", features = ["bundled", "chrono", "serde_json"] }
+
+

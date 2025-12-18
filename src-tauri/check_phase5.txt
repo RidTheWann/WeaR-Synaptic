@@ -1,0 +1,48 @@
+﻿cargo :     Checking synaptic 
+v0.1.0 (C:\Users\Administrator\Docu
+ments\WeaR-Synaptic\src-tauri)
+At line:1 char:1
++ cargo check 2>&1 | Out-File 
+-Encoding utf8 check_phase5.txt; 
+cat chec ...
++ ~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotS 
+   pecified: (    Checking sy...p  
+  tic\src-tauri):String) [], Rem   
+ oteException
+    + FullyQualifiedErrorId : Nati 
+   veCommandError
+ 
+warning: function 
+`parse_jsonrpc_message` is never 
+used
+   --> src\inspector.rs:105:8
+    |
+105 | pub fn 
+parse_jsonrpc_message(raw: &str) 
+-> Option<(MessageDirection, 
+serde_json::Value)> {
+    |        ^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` 
+(part of `#[warn(unused)]`) on by 
+default
+
+warning: method `redact_secrets` 
+is never used
+  --> src\process_manager.rs:72:14
+   |
+53 | impl ProcessManager {
+   | ------------------- method in 
+this implementation
+...
+72 |     async fn 
+redact_secrets(&self, content: 
+&str) -> String {
+   |              ^^^^^^^^^^^^^^
+
+warning: `synaptic` (lib) 
+generated 2 warnings
+    Finished `dev` profile 
+[unoptimized + debuginfo] 
+target(s) in 3.77s

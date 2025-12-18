@@ -1,0 +1,208 @@
+{
+  "project_config": {
+    "name": "synaptic",
+    "bundle_identifier": "com.synaptic.app",
+    "product_name": "Synaptic",
+    "version": "0.1.0"
+  },
+  "dependencies": {
+    "rust_crates": [
+      { "name": "serde", "version": "1.0", "features": ["derive"] },
+      { "name": "serde_json", "version": "1.0" },
+      { "name": "tokio", "version": "1.0", "features": ["full"] },
+      { "name": "dirs", "version": "5.0", "features": [] },
+      { "name": "chrono", "version": "0.4", "features": ["serde"] },
+      { "name": "uuid", "version": "1.0", "features": ["v4", "serde"] },
+      { "name": "thiserror", "version": "1.0", "features": [] },
+      { "name": "tauri", "version": "2.0.0", "features": [] },
+      { "name": "tauri-plugin-shell", "version": "2.0.0", "features": [] },
+      { "name": "tauri-plugin-fs", "version": "2.0.0", "features": [] },
+      { "name": "tauri-plugin-dialog", "version": "2.0.0", "features": [] }
+    ],
+    "npm_packages": [
+      { "name": "@tauri-apps/api", "version": "^2.0.0" },
+      { "name": "@tauri-apps/plugin-shell", "version": "^2.0.0" },
+      { "name": "@tauri-apps/plugin-fs", "version": "^2.0.0" },
+      { "name": "@tauri-apps/plugin-dialog", "version": "^2.0.0" },
+      { "name": "@tanstack/react-query", "version": "^5.0.0" },
+      { "name": "zustand", "version": "^4.5.0" },
+      { "name": "lucide-react", "version": "^0.460.0" },
+      { "name": "tailwindcss", "version": "^3.4.0", "dev": true },
+      { "name": "postcss", "version": "^8.4.0", "dev": true },
+      { "name": "autoprefixer", "version": "^10.4.0", "dev": true },
+      { "name": "clsx", "version": "^2.1.0" },
+      { "name": "tailwind-merge", "version": "^2.5.0" },
+      { "name": "class-variance-authority", "version": "^0.7.0" }
+    ]
+  },
+  "security_architecture": {
+    "capabilities": [
+      {
+        "filename": "default.json",
+        "permissions": [
+          "core:default",
+          "core:event:default",
+          "core:window:default",
+          "fs:default",
+          "fs:allow-read-text-file",
+          "fs:allow-write-text-file",
+          "fs:allow-exists",
+          "fs:allow-mkdir",
+          "fs:allow-read-dir",
+          "shell:default",
+          "shell:allow-spawn",
+          "dialog:default",
+          "dialog:allow-open",
+          "dialog:allow-save"
+        ],
+        "scopes": {
+          "fs": {
+            "description": "Filesystem access restricted to Claude config and Synaptic data directories",
+            "allow_paths": [
+              "$APPCONFIG/Claude/**",
+              "$APPDATA/Claude/**",
+              "$APPCONFIG/Synaptic/**",
+              "$APPDATA/Synaptic/**"
+            ]
+          },
+          "shell": {
+            "description": "Shell spawn restricted to npx, uvx, node, python runtimes for MCP servers",
+            "allow_commands": ["npx", "uvx", "node", "python", "python3", "uv"]
+          }
+        }
+      }
+    ]
+  },
+  "tauri_conf_overrides": {
+    "build": {
+      "devUrl": "http://localhost:5173",
+      "frontendDist": "../dist",
+      "beforeDevCommand": "npm run dev",
+      "beforeBuildCommand": "npm run build"
+    },
+    "app": {
+      "windows": [
+        {
+          "title": "Synaptic - MCP Server Manager",
+          "width": 1200,
+          "height": 800,
+          "minWidth": 800,
+          "minHeight": 600,
+          "resizable": true,
+          "fullscreen": false,
+          "center": true
+        }
+      ],
+      "security": {
+        "capabilities": ["default"]
+      }
+    }
+  },
+  "file_system_operations": {
+    "create": [
+      "src-tauri/src/main.rs          # SHIM: Binary entry point only",
+      "src-tauri/src/lib.rs           # CORE: Mobile-first run() with Builder",
+      "src-tauri/src/commands.rs      # IPC handlers for all 14 commands",
+      "src-tauri/src/state.rs         # AppState with Mutex-wrapped state",
+      "src-tauri/src/config.rs        # McpConfig, McpServer structs + file I/O",
+      "src-tauri/src/inspector.rs     # InspectorProxy + message capture",
+      "src-tauri/src/registry.rs      # RegistryServer + builtin_registry()",
+      "src-tauri/src/error.rs         # Custom error types with thiserror",
+      "src-tauri/capabilities/default.json  # V2 capability definitions",
+      "src/App.tsx                    # Root React component",
+      "src/main.tsx                   # React entry point",
+      "src/index.css                  # TailwindCSS imports + globals",
+      "src/lib/utils.ts               # cn() helper + utilities",
+      "src/lib/tauri.ts               # Tauri command wrappers",
+      "src/stores/appStore.ts         # Zustand global store",
+      "src/types/index.ts             # TypeScript interfaces",
+      "src/components/layout/Sidebar.tsx",
+      "src/components/layout/Header.tsx",
+      "src/components/layout/MainLayout.tsx",
+      "src/components/servers/ServerList.tsx",
+      "src/components/servers/ServerCard.tsx",
+      "src/components/servers/ServerForm.tsx",
+      "src/components/registry/RegistryBrowser.tsx",
+      "src/components/registry/RegistryCard.tsx",
+      "src/components/inspector/InspectorPanel.tsx",
+      "src/components/inspector/MessageLog.tsx",
+      "src/components/ui/button.tsx   # Shadcn Button",
+      "src/components/ui/card.tsx     # Shadcn Card",
+      "src/components/ui/dialog.tsx   # Shadcn Dialog",
+      "src/components/ui/input.tsx    # Shadcn Input",
+      "src/components/ui/label.tsx    # Shadcn Label",
+      "src/components/ui/badge.tsx    # Shadcn Badge",
+      "src/components/ui/scroll-area.tsx # Shadcn ScrollArea",
+      "tailwind.config.js             # TailwindCSS configuration",
+      "postcss.config.js              # PostCSS configuration",
+      "components.json                # Shadcn configuration"
+    ],
+    "modify": [
+      "src-tauri/Cargo.toml           # Add all Rust dependencies",
+      "src-tauri/tauri.conf.json      # Configure build + security",
+      "package.json                   # Add npm dependencies",
+      "vite.config.ts                 # Ensure Tauri compatibility"
+    ]
+  },
+  "rust_modules": {
+    "lib.rs": {
+      "exports": ["run"],
+      "annotation": "#[cfg_attr(mobile, tauri::mobile_entry_point)]",
+      "builder_plugins": [
+        "tauri_plugin_shell::init()",
+        "tauri_plugin_fs::init()",
+        "tauri_plugin_dialog::init()"
+      ],
+      "command_registration": [
+        "commands::get_config_path",
+        "commands::read_config",
+        "commands::write_config",
+        "commands::add_server",
+        "commands::remove_server",
+        "commands::update_server",
+        "commands::toggle_server",
+        "commands::list_backups",
+        "commands::restore_backup",
+        "commands::start_inspector",
+        "commands::stop_inspector",
+        "commands::get_inspector_messages",
+        "commands::clear_inspector_messages",
+        "commands::get_registry_servers",
+        "commands::install_registry_server",
+        "commands::check_runtime"
+      ]
+    },
+    "main.rs": {
+      "content": "fn main() { synaptic_lib::run(); }",
+      "note": "SHIM ONLY - No business logic"
+    },
+    "state.rs": {
+      "structs": [
+        {
+          "name": "AppState",
+          "fields": {
+            "config_cache": "Mutex<Option<McpConfig>>",
+            "inspector_sessions": "Mutex<HashMap<String, InspectorSession>>",
+            "inspector_messages": "Mutex<HashMap<String, Vec<InspectorMessage>>>"
+          }
+        }
+      ]
+    }
+  },
+  "command_trace_simulation": {
+    "example": "add_server",
+    "trace": [
+      "1. User clicks 'Add Server' -> ServerForm.tsx submits form data",
+      "2. Frontend calls invoke('add_server', { name, server }) via tauri.ts",
+      "3. Tauri IPC routes to commands::add_server(name, server, state)",
+      "4. Command acquires state.config_cache.lock()",
+      "5. If cache empty, reads claude_desktop_config.json via config::read_config_file()",
+      "6. Inserts new server into mcp_servers HashMap",
+      "7. Calls config::write_config_file() which:",
+      "   a. Creates backup in Synaptic/backups/",
+      "   b. Writes updated config to Claude config path",
+      "8. Returns Ok(()) to frontend",
+      "9. Frontend invalidates query cache, re-fetches server list"
+    ]
+  }
+}

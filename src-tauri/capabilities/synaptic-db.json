@@ -1,0 +1,14 @@
+{
+    "$schema": "../gen/schemas/desktop-schema.json",
+    "identifier": "synaptic-db-access",
+    "description": "Database access permissions for inspector logging and replay",
+    "windows": [
+        "main"
+    ],
+    "permissions": [
+        "sql:allow-load",
+        "sql:allow-execute",
+        "sql:allow-select",
+        "sql:allow-close"
+    ]
+}
